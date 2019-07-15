@@ -19,14 +19,28 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
+    <?php 
+    
+    // var_dump($dataProvider->query->prepare(Yii::$app->db->queryBuilder)->createCommand()->rawSql);
+    // $products = $dataProvider->query->all();
+    // var_dump($products[1]->getPrimaryKey());
+    // exit;
+    ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+            // '_id',
+            [
+                'attribute' => 'id',
+                'label' => 'PrimaryKey',
+                'content' => function($model) {
+        
+                    return $model->getPrimaryKey();
+                }
+            ],
             'name',
             'description:ntext',
             'image',

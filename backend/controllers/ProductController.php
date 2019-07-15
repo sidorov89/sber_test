@@ -104,6 +104,8 @@ class ProductController extends Controller
      */
     public function actionDelete($id)
     {
+        // var_dump($id);
+        // exit;
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);

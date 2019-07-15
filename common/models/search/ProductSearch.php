@@ -3,13 +3,16 @@
 namespace common\models\search;
 
 use yii\base\Model;
-use yii\data\ActiveDataProvider;
-use common\models\Product;
+// use yii\data\ActiveDataProvider;
+use yii\elasticsearch\ActiveDataProvider;
+use yii\elasticsearch\Query;
+use yii\elasticsearch\QueryBuilder;
+use common\models\ProductElastic;
 
 /**
  * ProductSearch represents the model behind the search form of `common\models\Product`.
  */
-class ProductSearch extends Product
+class ProductSearch extends ProductElastic
 {
     /**
      * {@inheritdoc}
@@ -17,8 +20,8 @@ class ProductSearch extends Product
     public function rules()
     {
         return [
-            [['id', 'views', 'active'], 'integer'],
-            [['name', 'description', 'image', 'created_at', 'updated_at'], 'safe'],
+            [['id', 'active'], 'integer'],
+            [['name', 'description'], 'safe'],
         ];
     }
 
@@ -40,7 +43,7 @@ class ProductSearch extends Product
      */
     public function search($params)
     {
-        $query = Product::find();
+        $query = ProductElastic::find();
 
         // add conditions that should always apply here
 

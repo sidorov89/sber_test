@@ -56,4 +56,48 @@ class Product extends \yii\db\ActiveRecord
             'updated_at' => 'Updated At',
         ];
     }
+    
+
+    public function afterSave($insert, $changedAttributes) {
+        parent::afterSave($insert, $changedAttributes);
+        // var_dump($insert);
+        // var_dump($changedAttributes);
+        // var_dump($this);
+        // exit;
+
+        if($insert) {
+            $productElastic = new ProductElastic();
+            $productElastic->setPrimaryKey($this->id);
+            // $productElastic->id = $this->id;
+            $productElastic->name = $this->name;
+            $productElastic->description = $this->description;
+            $productElastic->views = "0";
+            $productElastic->image = $this->image;
+            $productElastic->active = $this->active;
+            
+        } else {
+            $productElastic = ProductElastic::findOne($this->id);
+            // var_dump($productElastic);exit;
+            // $productElastic->id = $this->id;
+            $productElastic->name = $this->name;
+            $productElastic->description = $this->description;
+            $productElastic->views = "0";
+            $productElastic->image = $this->image;
+            $productElastic->active = $this->active;
+        }
+
+        $productElastic->save();
+    }
+
+    public function delete(){
+        $productElastic = ProductElastic::findOne($this->id);
+
+        if(!empty($productElastic)) {
+            $productElastic->delete();
+            // нужна секунда, что б после удаления успел обновиться elastic
+            sleep(1);
+        }
+
+        return parent::delete();
+    }
 }
