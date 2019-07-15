@@ -64,11 +64,11 @@ class ProductElastic extends \yii\elasticsearch\ActiveRecord
     }
 
     public static function index() {
-        return 'sber';
+        return 'sber2';
     }
 
     public static function type() {
-        return 'product';
+        return 'product2';
     }
 
     

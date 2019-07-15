@@ -66,26 +66,24 @@ class Product extends \yii\db\ActiveRecord
         // exit;
 
         if($insert) {
+            // var_dump($this->created_at);
+            // var_dump(strtotime($this->created_at));
+            // var_dump(date('c', strtotime($this->created_at)));
+            // exit;
             $productElastic = new ProductElastic();
             $productElastic->setPrimaryKey($this->id);
-            // $productElastic->id = $this->id;
-            $productElastic->name = $this->name;
-            $productElastic->description = $this->description;
             $productElastic->views = "0";
-            $productElastic->image = $this->image;
-            $productElastic->active = $this->active;
-            
+            $productElastic->created_at = date('c');
         } else {
             $productElastic = ProductElastic::findOne($this->id);
-            // var_dump($productElastic);exit;
-            // $productElastic->id = $this->id;
-            $productElastic->name = $this->name;
-            $productElastic->description = $this->description;
-            $productElastic->views = "0";
-            $productElastic->image = $this->image;
-            $productElastic->active = $this->active;
+            $productElastic->views = $this->views;
         }
 
+        $productElastic->updated_at = date('c');
+        $productElastic->name = $this->name;
+        $productElastic->description = $this->description;
+        $productElastic->image = $this->image;
+        $productElastic->active = $this->active;
         $productElastic->save();
     }
 

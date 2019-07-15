@@ -4,7 +4,7 @@ namespace backend\controllers;
 
 use Yii;
 use common\models\Product;
-use common\models\search\ProductSearch;
+use common\models\search\ProductSearchElastic;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -35,7 +35,7 @@ class ProductController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new ProductSearch();
+        $searchModel = new ProductSearchElastic();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -52,8 +52,12 @@ class ProductController extends Controller
      */
     public function actionView($id)
     {
+        $product = $this->findModel($id);
+        $product->views += 1; 
+        $product->save();
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $product,
         ]);
     }
 

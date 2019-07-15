@@ -23,6 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
     
     // var_dump($dataProvider->query->prepare(Yii::$app->db->queryBuilder)->createCommand()->rawSql);
     // $products = $dataProvider->query->all();
+    // var_dump($products);
     // var_dump($products[1]->getPrimaryKey());
     // exit;
     ?>
@@ -45,6 +46,13 @@ $this->params['breadcrumbs'][] = $this->title;
             'description:ntext',
             'image',
             'views',
+            [
+                'attribute' => 'created_at',
+                'label' => 'Дата создания',
+                'content' => function($model) {
+                    return date('d.m.Y H:i:s', strtotime($model->created_at));
+                }
+            ],
             //'active',
             //'created_at',
             //'updated_at',

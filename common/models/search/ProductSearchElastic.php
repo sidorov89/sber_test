@@ -10,9 +10,9 @@ use yii\elasticsearch\QueryBuilder;
 use common\models\ProductElastic;
 
 /**
- * ProductSearch represents the model behind the search form of `common\models\Product`.
+ * ProductSearchElastic represents the model behind the search form of `common\models\ProductElastic`.
  */
-class ProductSearch extends ProductElastic
+class ProductSearchElastic extends ProductElastic
 {
     /**
      * {@inheritdoc}
@@ -48,7 +48,7 @@ class ProductSearch extends ProductElastic
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
-            'query' => $query,
+            'query' => $query
         ]);
 
         $this->load($params);
@@ -71,6 +71,15 @@ class ProductSearch extends ProductElastic
         $query->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'description', $this->description])
             ->andFilterWhere(['like', 'image', $this->image]);
+
+
+        // var_dump($params);
+        // exit();
+
+        if(!empty($params['limit'])) {
+            $dataProvider->setPagination(['pageSize' => $params['limit']]);
+            $dataProvider->setTotalCount($params['limit']);
+        }
 
         return $dataProvider;
     }
